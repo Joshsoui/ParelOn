@@ -36,7 +36,22 @@ export function HeroContact({ ready }: { ready: boolean }) {
         className="flex flex-col items-center"
       >
         <div className="flex flex-col items-center gap-5">
-          <img src={logoWordmark} alt="Parel On" className="h-24 w-24 sm:h-32 sm:w-32" />
+          <div className="relative">
+            <motion.div
+              aria-hidden
+              className="absolute inset-0 -z-10 rounded-full blur-2xl"
+              style={{ background: "radial-gradient(circle, var(--color-brand) 0%, transparent 70%)" }}
+              animate={{ opacity: [0.3, 0.65, 0.3], scale: [0.88, 1.1, 0.88] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.img
+              src={logoWordmark}
+              alt="Parel On"
+              className="relative h-24 w-24 sm:h-32 sm:w-32"
+              animate={{ scale: [1, 1.035, 1] }}
+              transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </div>
           <span className="font-mono text-[11px] tracking-[0.4em] text-mist-dim uppercase">
             Artist management
           </span>
@@ -48,7 +63,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
             data-cursor
             data-cursor-text="Prev"
             aria-label="Previous track"
-            className="text-silver transition-transform hover:scale-110"
+            className="text-brand transition-transform hover:scale-110"
           >
             <PrevIcon className="h-6 w-6" />
           </button>
@@ -58,7 +73,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
             data-cursor
             data-cursor-text={isPaused ? "Play" : "Pause"}
             aria-label={isPaused ? "Play" : "Pause"}
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-silver text-ink transition-transform hover:scale-105"
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-ink transition-transform hover:scale-105"
           >
             {isPaused ? <PlayIcon className="ml-0.5 h-6 w-6" /> : <PauseIcon className="h-6 w-6" />}
           </button>
@@ -68,7 +83,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
             data-cursor
             data-cursor-text="Next"
             aria-label="Next track"
-            className="text-silver transition-transform hover:scale-110"
+            className="text-brand transition-transform hover:scale-110"
           >
             <NextIcon className="h-6 w-6" />
           </button>
@@ -88,7 +103,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
               onClick={() => setContactOpen(true)}
               data-cursor
               data-cursor-text="Go"
-              className="rounded-full bg-silver px-8 py-3.5 font-mono text-xs tracking-[0.2em] text-ink uppercase transition-transform hover:scale-[1.03]"
+              className="rounded-full bg-brand px-8 py-3.5 font-mono text-xs tracking-[0.2em] text-ink uppercase transition-transform hover:scale-[1.03]"
             >
               Get in touch
             </button>
