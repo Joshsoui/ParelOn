@@ -18,14 +18,32 @@ function buildEmbedDoc(initialUrl: string) {
   var widget = null;
   var iframe = document.getElementById("sc");
 
+  function reportCurrentSound() {
+    if (!widget) return;
+    widget.getCurrentSound(function (sound) {
+      if (!sound) return;
+      parent.postMessage(
+        {
+          source: "${BRIDGE_SOURCE}",
+          type: "track_info",
+          title: sound.title || "",
+          artist: sound.user && sound.user.username ? sound.user.username : "",
+        },
+        "*"
+      );
+    });
+  }
+
   iframe.addEventListener("load", function () {
     widget = SC.Widget(iframe);
 
     widget.bind(SC.Widget.Events.READY, function () {
       parent.postMessage({ source: "${BRIDGE_SOURCE}", type: "ready" }, "*");
+      reportCurrentSound();
     });
     widget.bind(SC.Widget.Events.PLAY, function () {
       parent.postMessage({ source: "${BRIDGE_SOURCE}", type: "playback_update", isPaused: false }, "*");
+      reportCurrentSound();
     });
     widget.bind(SC.Widget.Events.PAUSE, function () {
       parent.postMessage({ source: "${BRIDGE_SOURCE}", type: "playback_update", isPaused: true }, "*");
@@ -55,6 +73,7 @@ export function useSoundCloudEmbed(initialUrl: string | undefined) {
   const [doc] = useState(() => (initialUrl ? buildEmbedDoc(initialUrl) : undefined));
   const [ready, setReady] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
+  const [trackInfo, setTrackInfo] = useState<{ artist: string; title: string } | null>(null);
 
   useEffect(() => {
     function onMessage(e: MessageEvent) {
@@ -63,6 +82,7 @@ export function useSoundCloudEmbed(initialUrl: string | undefined) {
       if (!msg || msg.source !== BRIDGE_SOURCE) return;
       if (msg.type === "ready") setReady(true);
       if (msg.type === "playback_update" && typeof msg.isPaused === "boolean") setIsPaused(msg.isPaused);
+      if (msg.type === "track_info") setTrackInfo({ artist: msg.artist ?? "", title: msg.title ?? "" });
     }
 
     window.addEventListener("message", onMessage);
@@ -85,5 +105,5 @@ export function useSoundCloudEmbed(initialUrl: string | undefined) {
     post({ type: "loadUrl", url });
   }
 
-  return { iframeRef, doc, ready, isPaused, togglePlay, pause, loadTrack };
+  return { iframeRef, doc, ready, isPaused, trackInfo, togglePlay, pause, loadTrack };
 }

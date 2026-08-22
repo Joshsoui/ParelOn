@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Magnetic } from "../ui/Magnetic";
 import { ContactModal } from "../ui/ContactModal";
 import { PrevIcon, NextIcon, PlayIcon, PauseIcon } from "../ui/PlayerIcons";
@@ -46,12 +46,20 @@ export function HeroContact({ ready }: { ready: boolean }) {
     iframeRef: soundcloudIframeRef,
     doc: soundcloudDoc,
     isPaused: soundcloudIsPaused,
+    trackInfo: soundcloudTrackInfo,
     togglePlay: soundcloudTogglePlay,
     pause: soundcloudPause,
     loadTrack: soundcloudLoadTrack,
   } = useSoundCloudEmbed(FIRST_SOUNDCLOUD_URL);
 
   const isPaused = activePlatform === "spotify" ? spotifyIsPaused : soundcloudIsPaused;
+
+  const current = TRACKS[trackIndex];
+  const nowPlaying =
+    current.platform === "soundcloud" && soundcloudTrackInfo
+      ? soundcloudTrackInfo
+      : { artist: current.artist, title: current.title };
+  const nowPlayingText = [nowPlaying.artist, nowPlaying.title].filter(Boolean).join(" — ");
 
   function togglePlay() {
     if (activePlatform === "spotify") spotifyTogglePlay();
@@ -164,6 +172,21 @@ export function HeroContact({ ready }: { ready: boolean }) {
             )}
           </div>
         </div>
+
+        <AnimatePresence>
+          {!isPaused && nowPlayingText && (
+            <motion.p
+              key={nowPlayingText}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.3 }}
+              className="mt-5 font-mono text-[11px] tracking-[0.4em] text-mist-dim uppercase"
+            >
+              {nowPlayingText}
+            </motion.p>
+          )}
+        </AnimatePresence>
 
         <motion.div
           layoutId={CONTACT_LAYOUT_ID}
