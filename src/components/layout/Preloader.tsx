@@ -6,8 +6,7 @@ export function Preloader({ show }: { show: boolean }) {
     <AnimatePresence>
       {show && (
         <motion.div
-          className="fixed inset-0 z-[200] flex items-center justify-center overflow-hidden"
-          style={{ background: "linear-gradient(90deg, #A7D86B 0%, #C3DE73 100%)" }}
+          className="intro-flicker-bg fixed inset-0 z-[200] flex items-center justify-center overflow-hidden"
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 } }}
         >
@@ -16,9 +15,9 @@ export function Preloader({ show }: { show: boolean }) {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ scale: 1.04, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="w-[55vw] max-w-[520px] min-w-[220px]"
+            className="intro-flicker-fg w-[55vw] max-w-[520px] min-w-[220px]"
           >
-            <OnMark className="w-full" color="#FFFFFF" />
+            <OnMark className="w-full" color="currentColor" />
           </motion.div>
         </motion.div>
       )}
