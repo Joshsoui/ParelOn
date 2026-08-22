@@ -12,7 +12,7 @@ export function Footer() {
           target="_blank"
           rel="noreferrer"
           data-cursor
-          className="font-mono text-[11px] tracking-[0.2em] text-mist-dim uppercase transition-colors hover:text-brand"
+          className="font-mono text-[11px] tracking-[0.2em] text-mist-dim uppercase transition-colors hover:text-silver"
         >
           Instagram
         </a>
@@ -21,7 +21,7 @@ export function Footer() {
           target="_blank"
           rel="noreferrer"
           data-cursor
-          className="font-mono text-[11px] tracking-[0.2em] text-mist-dim uppercase transition-colors hover:text-brand"
+          className="font-mono text-[11px] tracking-[0.2em] text-mist-dim uppercase transition-colors hover:text-silver"
         >
           SoundCloud
         </a>
@@ -32,7 +32,7 @@ export function Footer() {
           href="#top"
           data-cursor
           data-cursor-text="Top"
-          className="mt-2 flex h-10 w-10 items-center justify-center rounded-full border border-line text-paper transition-colors hover:border-brand hover:text-brand"
+          className="mt-2 flex h-10 w-10 items-center justify-center rounded-full border border-line text-paper transition-colors hover:border-silver hover:text-silver"
           aria-label="Back to top"
         >
           ↑

@@ -38,11 +38,11 @@ export function CustomCursor() {
   return (
     <div className="pointer-events-none fixed inset-0 z-[100] hidden md:block">
       <motion.div
-        className="absolute top-0 left-0 h-2 w-2 rounded-full bg-brand"
+        className="absolute top-0 left-0 h-2 w-2 rounded-full bg-silver"
         style={{ x, y, translateX: "-50%", translateY: "-50%" }}
       />
       <motion.div
-        className="absolute top-0 left-0 flex items-center justify-center rounded-full border border-brand/60 backdrop-blur-[1px]"
+        className="absolute top-0 left-0 flex items-center justify-center rounded-full border border-silver/60 backdrop-blur-[1px]"
         style={{
           x: ringX,
           y: ringY,
@@ -52,12 +52,12 @@ export function CustomCursor() {
         animate={{
           width: variant === "hover" ? (label ? 92 : 56) : 32,
           height: variant === "hover" ? (label ? 92 : 56) : 32,
-          backgroundColor: variant === "hover" ? "rgba(167,216,107,0.12)" : "rgba(167,216,107,0)",
+          backgroundColor: variant === "hover" ? "rgba(205,209,214,0.14)" : "rgba(205,209,214,0)",
         }}
         transition={{ type: "spring", damping: 24, stiffness: 260 }}
       >
         {label && (
-          <span className="font-mono text-[10px] tracking-[0.15em] text-brand uppercase">{label}</span>
+          <span className="font-mono text-[10px] tracking-[0.15em] text-silver uppercase">{label}</span>
         )}
       </motion.div>
     </div>

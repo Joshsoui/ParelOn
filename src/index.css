@@ -12,10 +12,15 @@
   --color-mist: #c9cacc;
   --color-mist-dim: #86888c;
 
+  /* Logo-only green — reserved for the actual /on mark (hero, footer, preloader). */
   --color-brand: #a7d86b;
   --color-brand-lime: #c3de73;
-  --color-brand-deep: #6fa83c;
-  --color-brand-glow: #dcf59e;
+
+  /* Site-wide metallic accent — buttons, glows, borders, cursor, focus states. */
+  --color-silver: #cdd1d6;
+  --color-silver-bright: #f2f3f5;
+  --color-silver-dim: #83878e;
+  --color-silver-glow: #ffffff;
 
   --animate-spin-slow: spin 16s linear infinite;
   --animate-pulse-soft: pulse-soft 3.2s ease-in-out infinite;
@@ -45,7 +50,7 @@
 }
 
 * {
-  scrollbar-color: var(--color-brand) var(--color-ink);
+  scrollbar-color: var(--color-silver) var(--color-ink);
 }
 
 html {
@@ -78,7 +83,7 @@ body {
 }
 
 ::selection {
-  background: var(--color-brand);
+  background: var(--color-silver);
   color: var(--color-ink);
 }
 
@@ -88,13 +93,6 @@ body {
 
 .font-mono {
   font-family: var(--font-mono);
-}
-
-.text-gradient {
-  background: linear-gradient(90deg, var(--color-brand) 0%, var(--color-brand-lime) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
 }
 
 .bg-grain {

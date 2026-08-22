@@ -114,13 +114,13 @@ export function ContactModal({
               transition={{ type: "spring", damping: 28, stiffness: 300 }}
               className="pointer-events-auto w-full max-w-md sm:max-w-3xl"
             >
-              <div className="relative overflow-hidden rounded-[28px] p-[1.5px] shadow-[0_0_140px_-30px_var(--color-brand)]">
+              <div className="relative overflow-hidden rounded-[28px] p-[1.5px] shadow-[0_0_140px_-30px_var(--color-silver)]">
                 <div
                   aria-hidden
                   className="absolute inset-[-60%] animate-spin-slow"
                   style={{
                     background:
-                      "conic-gradient(from 0deg, var(--color-brand), transparent 25%, var(--color-brand-lime), transparent 60%, var(--color-brand))",
+                      "conic-gradient(from 0deg, var(--color-silver), transparent 25%, var(--color-silver-bright), transparent 60%, var(--color-silver))",
                   }}
                 />
 
@@ -130,18 +130,18 @@ export function ContactModal({
                     data-cursor
                     data-cursor-text="Close"
                     aria-label="Close"
-                    className="absolute top-5 right-5 z-10 flex h-8 w-8 items-center justify-center rounded-full text-mist-dim transition-colors hover:text-brand"
+                    className="absolute top-5 right-5 z-10 flex h-8 w-8 items-center justify-center rounded-full text-mist-dim transition-colors hover:text-silver"
                   >
                     ✕
                   </button>
 
                   <div className="hidden flex-col justify-between border-r border-line p-9 sm:flex">
                     <div>
-                      <span className="font-mono text-[10px] tracking-[0.35em] text-brand uppercase">
+                      <span className="font-mono text-[10px] tracking-[0.35em] text-silver uppercase">
                         Let&rsquo;s talk
                       </span>
                       <h2 className="mt-4 font-display text-3xl leading-[1.1] font-semibold tracking-tight text-paper">
-                        Tell us what you&rsquo;re building.
+                        Let&rsquo;s make something happen.
                       </h2>
                       <p className="mt-4 text-sm text-mist">
                         Booking, management or a brand collaboration — we&rsquo;ll route it to the
@@ -157,7 +157,7 @@ export function ContactModal({
                       <a
                         href={`mailto:${CONTACT_EMAIL}`}
                         data-cursor
-                        className="font-mono text-xs tracking-[0.05em] text-mist transition-colors hover:text-brand"
+                        className="font-mono text-xs tracking-[0.05em] text-mist transition-colors hover:text-silver"
                       >
                         {CONTACT_EMAIL}
                       </a>
@@ -165,11 +165,11 @@ export function ContactModal({
                   </div>
 
                   <div className="flex flex-col gap-1 px-7 pt-8 sm:hidden">
-                    <span className="font-mono text-[10px] tracking-[0.35em] text-brand uppercase">
+                    <span className="font-mono text-[10px] tracking-[0.35em] text-silver uppercase">
                       Let&rsquo;s talk
                     </span>
                     <h2 className="font-display text-2xl font-semibold tracking-tight text-paper">
-                      Tell us what you&rsquo;re building.
+                      Let&rsquo;s make something happen.
                     </h2>
                   </div>
 
@@ -240,7 +240,7 @@ export function ContactModal({
                                 disabled={status === "sending"}
                                 data-cursor
                                 data-cursor-text="Send"
-                                className="rounded-full bg-brand px-8 py-3.5 font-mono text-xs tracking-[0.2em] text-ink uppercase transition-transform hover:scale-[1.03] disabled:opacity-50"
+                                className="rounded-full bg-silver px-8 py-3.5 font-mono text-xs tracking-[0.2em] text-ink uppercase transition-transform hover:scale-[1.03] disabled:opacity-50"
                               >
                                 {status === "sending" ? "Sending..." : "Send"}
                               </button>

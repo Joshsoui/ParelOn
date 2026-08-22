@@ -49,14 +49,14 @@ export function HeroContact({ ready }: { ready: boolean }) {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center gap-5 rounded-[28px] border border-line bg-white/[0.03] px-9 py-8 shadow-[0_0_80px_-30px_var(--color-brand)] backdrop-blur-xl">
+        <div className="mt-10 flex flex-col items-center gap-5 rounded-[28px] border border-line bg-white/[0.03] px-9 py-8 shadow-[0_0_80px_-30px_var(--color-silver)] backdrop-blur-xl">
           <div className="flex items-center gap-7">
             <button
               onClick={() => goTo(-1)}
               data-cursor
               data-cursor-text="Prev"
               aria-label="Previous track"
-              className="text-brand transition-transform hover:scale-110"
+              className="text-silver transition-transform hover:scale-110"
             >
               <PrevIcon className="h-6 w-6" />
             </button>
@@ -66,7 +66,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
               data-cursor
               data-cursor-text={isPaused ? "Play" : "Pause"}
               aria-label={isPaused ? "Play" : "Pause"}
-              className="flex h-14 w-14 items-center justify-center rounded-full bg-brand text-ink transition-transform hover:scale-105"
+              className="flex h-14 w-14 items-center justify-center rounded-full bg-silver text-ink transition-transform hover:scale-105"
             >
               {isPaused ? <PlayIcon className="ml-0.5 h-6 w-6" /> : <PauseIcon className="h-6 w-6" />}
             </button>
@@ -76,7 +76,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
               data-cursor
               data-cursor-text="Next"
               aria-label="Next track"
-              className="text-brand transition-transform hover:scale-110"
+              className="text-silver transition-transform hover:scale-110"
             >
               <NextIcon className="h-6 w-6" />
             </button>
@@ -100,7 +100,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
               onClick={() => setContactOpen(true)}
               data-cursor
               data-cursor-text="Go"
-              className="rounded-full bg-brand px-8 py-3.5 font-mono text-xs tracking-[0.2em] text-ink uppercase transition-transform hover:scale-[1.03]"
+              className="rounded-full bg-silver px-8 py-3.5 font-mono text-xs tracking-[0.2em] text-ink uppercase transition-transform hover:scale-[1.03]"
             >
               Get in touch
             </button>
