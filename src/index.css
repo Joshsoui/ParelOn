@@ -96,6 +96,179 @@
   animation: intro-flicker-fg 1.6s steps(1, end) both;
 }
 
+/* Kept on a separate plain element from .intro-flicker-fg: Framer Motion drives that element's own
+   `transform` (the entrance scale) via inline styles each frame, which wins over a stylesheet
+   animation on the same property — so the jitter needs its own non-Framer-controlled node. */
+.intro-glitch-shift {
+  animation: intro-glitch-shift 1.6s steps(1, end) both;
+}
+
+/* Glitch bursts — a quick position jitter on the mark plus two mis-registered RGB-split "ghost"
+   copies, timed to hit right at each intro-flicker color cut for a distorted, broken-signal feel. */
+@keyframes intro-glitch-shift {
+  0%,
+  21% {
+    transform: translateX(0) skewX(0deg);
+  }
+  22% {
+    transform: translateX(-38px) skewX(-9deg);
+  }
+  25% {
+    transform: translateX(30px) skewX(7deg);
+  }
+  28% {
+    transform: translateX(-18px) skewX(-5deg);
+  }
+  31%,
+  45% {
+    transform: translateX(0) skewX(0deg);
+  }
+  46% {
+    transform: translateX(34px) skewX(8deg);
+  }
+  49% {
+    transform: translateX(-34px) skewX(-9deg);
+  }
+  52% {
+    transform: translateX(22px) skewX(5deg);
+  }
+  55%,
+  70% {
+    transform: translateX(0) skewX(0deg);
+  }
+  71% {
+    transform: translateX(-34px) skewX(-7deg);
+  }
+  74% {
+    transform: translateX(38px) skewX(9deg);
+  }
+  77% {
+    transform: translateX(-22px) skewX(-5deg);
+  }
+  80%,
+  100% {
+    transform: translateX(0) skewX(0deg);
+  }
+}
+
+@keyframes intro-glitch-ghost-a {
+  0%,
+  21% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.85;
+    transform: translate(-26px, 8px);
+  }
+  25% {
+    opacity: 0.85;
+    transform: translate(20px, -8px);
+  }
+  28% {
+    opacity: 0.85;
+    transform: translate(-14px, 4px);
+  }
+  31%,
+  45% {
+    opacity: 0;
+  }
+  46% {
+    opacity: 0.85;
+    transform: translate(22px, -8px);
+  }
+  49% {
+    opacity: 0.85;
+    transform: translate(-22px, 8px);
+  }
+  52% {
+    opacity: 0.85;
+    transform: translate(16px, -4px);
+  }
+  55%,
+  70% {
+    opacity: 0;
+  }
+  71% {
+    opacity: 0.85;
+    transform: translate(-22px, 4px);
+  }
+  74% {
+    opacity: 0.85;
+    transform: translate(22px, -4px);
+  }
+  77% {
+    opacity: 0.85;
+    transform: translate(-14px, 8px);
+  }
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes intro-glitch-ghost-b {
+  0%,
+  21% {
+    opacity: 0;
+  }
+  22% {
+    opacity: 0.85;
+    transform: translate(26px, -8px);
+  }
+  25% {
+    opacity: 0.85;
+    transform: translate(-20px, 8px);
+  }
+  28% {
+    opacity: 0.85;
+    transform: translate(14px, -4px);
+  }
+  31%,
+  45% {
+    opacity: 0;
+  }
+  46% {
+    opacity: 0.85;
+    transform: translate(-22px, 8px);
+  }
+  49% {
+    opacity: 0.85;
+    transform: translate(22px, -8px);
+  }
+  52% {
+    opacity: 0.85;
+    transform: translate(-16px, 4px);
+  }
+  55%,
+  70% {
+    opacity: 0;
+  }
+  71% {
+    opacity: 0.85;
+    transform: translate(22px, -4px);
+  }
+  74% {
+    opacity: 0.85;
+    transform: translate(-22px, 4px);
+  }
+  77% {
+    opacity: 0.85;
+    transform: translate(14px, -8px);
+  }
+  80%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.intro-glitch-ghost-a {
+  animation: intro-glitch-ghost-a 1.6s steps(1, end) both;
+}
+
+.intro-glitch-ghost-b {
+  animation: intro-glitch-ghost-b 1.6s steps(1, end) both;
+}
+
 * {
   scrollbar-color: var(--color-silver) var(--color-ink);
 }

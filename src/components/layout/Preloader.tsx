@@ -17,7 +17,23 @@ export function Preloader({ show }: { show: boolean }) {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="intro-flicker-fg w-[55vw] max-w-[520px] min-w-[220px]"
           >
-            <OnMark className="w-full" color="currentColor" />
+            {/*
+              Framer Motion drives this parent's own `transform` (the entrance scale) via inline
+              styles every frame, which would win over a stylesheet animation on the same property.
+              The glitch jitter lives on this separate inner element instead, so the two never fight
+              over `transform`.
+            */}
+            <div className="intro-glitch-shift relative">
+              <OnMark className="w-full" color="currentColor" />
+              <OnMark
+                className="intro-glitch-ghost-a pointer-events-none absolute inset-0 w-full mix-blend-screen"
+                color="#00e5ff"
+              />
+              <OnMark
+                className="intro-glitch-ghost-b pointer-events-none absolute inset-0 w-full mix-blend-screen"
+                color="#ff2e9a"
+              />
+            </div>
           </motion.div>
         </motion.div>
       )}
