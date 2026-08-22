@@ -18,6 +18,7 @@ const TRACKS: QueueTrack[] = [
   { platform: "spotify", uri: "spotify:track:0QfHRJwzVFgNLQwZmMpUfz", artist: "Jeno, Wempe", title: "In The Air" },
   { platform: "spotify", uri: "spotify:track:404MxkOiMnqfYgiHtI7jEr", artist: "Jeno, Wempe", title: "Contra" },
   { platform: "soundcloud", url: "https://on.soundcloud.com/IoXEksVqHRwGU22812", artist: "", title: "" },
+  { platform: "soundcloud", url: "https://on.soundcloud.com/vtbdZO5bi67GCOx6T3", artist: "", title: "" },
   { platform: "spotify", uri: "spotify:track:2gCcxsBjL0Tii4cVPOwswZ", artist: "", title: "" },
   { platform: "spotify", uri: "spotify:track:7qiZfU4dY1lWllzX7mPBI3", artist: "Ed Sheeran", title: "Shape of You" },
   { platform: "spotify", uri: "spotify:track:4uLU6hMCjMI75M1A2tKUQC", artist: "Rick Astley", title: "Never Gonna Give You Up" },
