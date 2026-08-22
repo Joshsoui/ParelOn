@@ -15,6 +15,7 @@ type QueueTrack =
   | { platform: "soundcloud"; url: string; artist: string; title: string };
 
 const TRACKS: QueueTrack[] = [
+  { platform: "spotify", uri: "spotify:track:0QfHRJwzVFgNLQwZmMpUfz", artist: "Jeno, Wempe", title: "In The Air" },
   { platform: "spotify", uri: "spotify:track:404MxkOiMnqfYgiHtI7jEr", artist: "", title: "" },
   { platform: "soundcloud", url: "https://on.soundcloud.com/IoXEksVqHRwGU22812", artist: "", title: "" },
   { platform: "spotify", uri: "spotify:track:2gCcxsBjL0Tii4cVPOwswZ", artist: "", title: "" },
