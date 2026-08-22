@@ -16,6 +16,23 @@ npm run preview   # preview the production build
 npm run lint      # oxlint
 ```
 
+## Deploying to Render
+
+This repo includes a `render.yaml` blueprint for a static site (build with `npm run build`,
+serve `dist/`). To deploy:
+
+1. Push this repo to GitHub (already done if you're reading this from the repo).
+2. In the [Render dashboard](https://dashboard.render.com), click **New +** → **Blueprint**, and
+   point it at this repository. Render will read `render.yaml` and set everything up
+   automatically — no manual build/publish configuration needed.
+3. If you're wiring the contact form to Formspree/Web3Forms (see below), add
+   `VITE_CONTACT_FORM_ENDPOINT` as an environment variable on the Render service before the first
+   deploy, since it's baked into the build at build time.
+4. Once deployed, add your custom domain under the service's **Settings → Custom Domains**.
+
+Alternatively, without the blueprint: create a new **Static Site** on Render pointed at this repo,
+set the build command to `npm run build` and the publish directory to `dist`.
+
 ## Customize before launch
 
 - **Contact form** — by default the form opens a pre-filled `mailto:` to the address set in
