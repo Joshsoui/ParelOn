@@ -7,7 +7,7 @@ export function SuccessCheck() {
         cx="32"
         cy="32"
         r="29"
-        stroke="var(--color-silver)"
+        stroke="var(--color-brand)"
         strokeWidth="3"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: 1 }}
@@ -15,7 +15,7 @@ export function SuccessCheck() {
       />
       <motion.path
         d="M20 33.5 L28 41.5 L45 23.5"
-        stroke="var(--color-silver)"
+        stroke="var(--color-brand)"
         strokeWidth="3.5"
         strokeLinecap="round"
         strokeLinejoin="round"
