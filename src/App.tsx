@@ -8,7 +8,7 @@ import { AmbientGlow } from "./components/ui/AmbientGlow";
 import { HeroContact } from "./components/sections/HeroContact";
 import { Footer } from "./components/sections/Footer";
 
-const MIN_LOAD_MS = 1100;
+const MIN_LOAD_MS = 1800;
 
 function App() {
   const [loading, setLoading] = useState(true);

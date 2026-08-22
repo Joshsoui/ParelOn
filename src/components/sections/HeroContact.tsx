@@ -81,7 +81,8 @@ export function HeroContact({ ready }: { ready: boolean }) {
             {current.artist} — {current.title}
           </p>
 
-          <div ref={mountRef} className="h-[80px] w-[260px] overflow-hidden rounded-xl opacity-90" />
+          {/* Spotify embed stays mounted (required by the controller API) but is visually hidden — only the custom controls above are shown. */}
+          <div ref={mountRef} aria-hidden className="absolute h-px w-px overflow-hidden opacity-0" />
         </div>
 
         <motion.div
