@@ -10,7 +10,6 @@ import logoWordmark from "../../assets/logo-wordmark.svg";
 // Copy Song Link, the ID after /track/ becomes spotify:track:<id>).
 const TRACKS = [
   { uri: "spotify:track:0VjIjW4GlUZAMYd2vXMi3b", artist: "The Weeknd", title: "Blinding Lights" },
-  { uri: "spotify:track:0DiWol3AO6WpXZgp0goxAV", artist: "Daft Punk", title: "One More Time" },
   { uri: "spotify:track:7qiZfU4dY1lWllzX7mPBI3", artist: "Ed Sheeran", title: "Shape of You" },
   { uri: "spotify:track:4uLU6hMCjMI75M1A2tKUQC", artist: "Rick Astley", title: "Never Gonna Give You Up" },
 ];
