@@ -1,8 +1,8 @@
 # Parel On — Artist Management & Bookings
 
-A minimal, animation-driven onepager for an artist management & booking agency. No nav, almost
-no copy: a large centered logo and two headlines that morph — driven by scroll — into a contact
-form, followed by an autoplaying Spotify embed and a small footer.
+A minimal, animation-driven onepager for an artist management & booking agency. No nav: a
+centered logo, custom Spotify play/prev/next controls, and a "Get in touch" button that opens an
+animated contact form modal.
 
 Built with React, TypeScript, Tailwind CSS, Framer Motion and Lenis for smooth scrolling.
 
@@ -19,8 +19,8 @@ npm run lint      # oxlint
 ## Customize before launch
 
 - **Contact form** — by default the form opens a pre-filled `mailto:` to the address set in
-  `src/components/sections/HeroContact.tsx` (`CONTACT_EMAIL`). To submit straight to an inbox or
-  CRM instead, create a form endpoint (e.g. [Formspree](https://formspree.io) or
+  `src/components/ui/ContactModal.tsx` (`CONTACT_EMAIL`). To submit straight to an inbox or CRM
+  instead, create a form endpoint (e.g. [Formspree](https://formspree.io) or
   [Web3Forms](https://web3forms.com), both free for a single form) and set:
 
   ```bash
@@ -28,32 +28,42 @@ npm run lint      # oxlint
   VITE_CONTACT_FORM_ENDPOINT=https://formspree.io/f/your-id
   ```
 
-- **Music player** — swap the placeholder playlist in
-  `src/components/sections/MusicPlayer.tsx` (`SPOTIFY_EMBED_SRC`) for Parel On's own Spotify
-  playlist/artist embed link (Spotify → Share → Embed playlist/artist). Note: the `autoplay=1`
-  param is a best-effort — browsers block unmuted audio autoplay until the visitor has interacted
-  with the page at least once, so on a first visit the player may sit ready-to-press rather than
-  playing instantly. This is a browser policy, not something any site can override.
+- **Music player / track queue** — swap the placeholder `TRACKS` array in
+  `src/components/sections/HeroContact.tsx` for Parel On's own roster tracks. Each entry needs a
+  `spotify:track:<id>` URI (Spotify → Share → Copy Song Link, the ID is the part after `/track/`)
+  plus the artist/title text shown under the controls. See **How the player works** below for why
+  this is a curated list rather than a linked playlist.
 
 - **Headlines, logo label, socials** — all copy lives inline in `HeroContact.tsx` and
   `Footer.tsx`.
 
 - **Logo** — `src/assets/logo-badge.svg` (gradient square badge, used for the favicon/app icon)
   and `src/assets/logo-wordmark.svg` (transparent, gradient-filled mark used across the site) are
-  hand-built vector recreations of the supplied logo, so they scale cleanly at any size.
+  a traced vector of the supplied logo file, so they scale cleanly at any size.
   `src/assets/logo-mono.svg` is a `currentColor` version for one-off use elsewhere.
 
-## How the morph works
+## How the player works
 
-`HeroContact.tsx` pins the hero viewport (`position: sticky`) for a tall (240vh) scroll region and
-drives the logo's scale/position, the headline's fade-out and the form's fade-in from a single
-`useScroll` progress value — no separate "sections" for hero vs. contact, just one continuous
-scroll-linked transition.
+The play/prev/next buttons are wired to Spotify's official **iFrame Embed API**
+(`src/lib/useSpotifyEmbed.ts`), not just a decorative overlay — `togglePlay()` really pauses and
+resumes playback, and prev/next call `loadUri()` to switch tracks. Spotify's public embed API
+doesn't expose "skip to next/previous track" for a playlist's contents (no track list, no
+skip method), so instead of a linked playlist the player steps through the small `TRACKS` list
+described above. That also means the artist/title line under the controls is instant and always
+correct — no client-side lookup needed. The actual Spotify iframe stays in the DOM (small, tucked
+under the now-playing text) since Spotify's controller API requires a live embed to control and
+their branding guidelines expect it to stay visible.
+
+## How the contact modal works
+
+The "Get in touch" button and the modal card share a Framer Motion `layoutId`
+(`src/components/ui/ContactModal.tsx`), so opening it animates the button growing into the modal
+card rather than a plain fade-in. Escape and a backdrop click close it.
 
 ## Stack
 
 - Vite + React + TypeScript
 - Tailwind CSS v4 (tokens/theme in `src/index.css`)
-- Framer Motion (scroll-linked morph, magnetic buttons, custom cursor)
+- Framer Motion (shared-layout modal, magnetic buttons, custom cursor)
 - Lenis (smooth scrolling)
 - react-hook-form + zod (contact form validation)

@@ -5,7 +5,6 @@ import { NoiseOverlay } from "./components/layout/NoiseOverlay";
 import { ScrollProgress } from "./components/layout/ScrollProgress";
 import { Preloader } from "./components/layout/Preloader";
 import { HeroContact } from "./components/sections/HeroContact";
-import { MusicPlayer } from "./components/sections/MusicPlayer";
 import { Footer } from "./components/sections/Footer";
 
 const MIN_LOAD_MS = 1100;
@@ -26,8 +25,7 @@ function App() {
       <NoiseOverlay />
       <ScrollProgress />
       <main>
-        <HeroContact />
-        <MusicPlayer />
+        <HeroContact ready={!loading} />
       </main>
       <Footer />
     </SmoothScroll>
