@@ -22,11 +22,6 @@
   --color-silver-dim: #83878e;
   --color-silver-glow: #ffffff;
 
-  /* Purple/blue metallic accent — player + contact CTAs and modal glow (kept off the logo itself). */
-  --color-accent: #7076e8;
-  --color-accent-bright: #c9caff;
-  --color-accent-dim: #43479e;
-
   --animate-spin-slow: spin 16s linear infinite;
   --animate-pulse-soft: pulse-soft 3.2s ease-in-out infinite;
   --animate-bounce-soft: bounce-soft 2s ease-in-out infinite;
