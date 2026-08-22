@@ -5,43 +5,21 @@
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-ink: #08090a;
-  --color-ink-soft: #0e100d;
-  --color-ink-raised: #14170f;
-  --color-line: #ffffff1a;
-  --color-line-soft: #ffffff0d;
-  --color-paper: #f5f6ee;
-  --color-mist: #c8cabd;
-  --color-mist-dim: #8b8d80;
+  --color-ink: #050506;
+  --color-line: #ffffff22;
+  --color-line-soft: #ffffff0f;
+  --color-paper: #fafaf8;
+  --color-mist: #c9cacc;
+  --color-mist-dim: #86888c;
 
   --color-brand: #a7d86b;
   --color-brand-lime: #c3de73;
   --color-brand-deep: #6fa83c;
   --color-brand-glow: #dcf59e;
 
-  --animate-marquee: marquee 28s linear infinite;
-  --animate-spin-slow: spin 14s linear infinite;
-  --animate-float: float 7s ease-in-out infinite;
+  --animate-spin-slow: spin 16s linear infinite;
   --animate-pulse-soft: pulse-soft 3.2s ease-in-out infinite;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-14px);
-  }
+  --animate-bounce-soft: bounce-soft 2s ease-in-out infinite;
 }
 
 @keyframes pulse-soft {
@@ -50,6 +28,18 @@
     opacity: 0.55;
   }
   50% {
+    opacity: 1;
+  }
+}
+
+@keyframes bounce-soft {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(8px);
     opacity: 1;
   }
 }
@@ -64,7 +54,11 @@ html {
 }
 
 body {
-  background: var(--color-ink);
+  background:
+    radial-gradient(ellipse 90% 60% at 50% -10%, #3a3c40 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% 90%, #2c2e31 0%, transparent 55%),
+    linear-gradient(165deg, #08090a 0%, #1c1d1f 32%, #38393c 52%, #1a1b1d 72%, #050506 100%);
+  background-attachment: fixed;
   color: var(--color-paper);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -112,7 +106,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.045;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   background-size: 180px 180px;
