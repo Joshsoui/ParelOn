@@ -40,6 +40,7 @@ function buildEmbedDoc(initialUri: string) {
     var msg = e.data;
     if (!msg || msg.source !== "${BRIDGE_SOURCE}-cmd" || !controller) return;
     if (msg.type === "togglePlay") controller.togglePlay();
+    if (msg.type === "pause") controller.pause();
     if (msg.type === "loadUri") {
       controller.loadUri(msg.uri);
       setTimeout(function () { controller.play(); }, 150);
@@ -78,9 +79,13 @@ export function useSpotifyEmbed(initialUri: string) {
     post({ type: "togglePlay" });
   }
 
+  function pause() {
+    post({ type: "pause" });
+  }
+
   function loadTrack(uri: string) {
     post({ type: "loadUri", uri });
   }
 
-  return { iframeRef, doc, ready, isPaused, togglePlay, loadTrack };
+  return { iframeRef, doc, ready, isPaused, togglePlay, pause, loadTrack };
 }

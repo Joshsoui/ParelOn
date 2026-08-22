@@ -4,29 +4,72 @@ import { Magnetic } from "../ui/Magnetic";
 import { ContactModal } from "../ui/ContactModal";
 import { PrevIcon, NextIcon, PlayIcon, PauseIcon } from "../ui/PlayerIcons";
 import { useSpotifyEmbed } from "../../lib/useSpotifyEmbed";
+import { useSoundCloudEmbed } from "../../lib/useSoundCloudEmbed";
 import logoWordmark from "../../assets/logo-wordmark.svg";
 
-// Demo queue — swap these for Parel On's own roster tracks whenever you're ready (Spotify → Share →
-// Copy Song Link, the ID after /track/ becomes spotify:track:<id>).
-const TRACKS = [
-  { uri: "spotify:track:404MxkOiMnqfYgiHtI7jEr", artist: "", title: "" },
-  { uri: "spotify:track:2gCcxsBjL0Tii4cVPOwswZ", artist: "", title: "" },
-  { uri: "spotify:track:0VjIjW4GlUZAMYd2vXMi3b", artist: "The Weeknd", title: "Blinding Lights" },
-  { uri: "spotify:track:7qiZfU4dY1lWllzX7mPBI3", artist: "Ed Sheeran", title: "Shape of You" },
-  { uri: "spotify:track:4uLU6hMCjMI75M1A2tKUQC", artist: "Rick Astley", title: "Never Gonna Give You Up" },
+// Demo queue — swap these for Parel On's own roster tracks whenever you're ready.
+// Spotify: Share → Copy Song Link, the ID after /track/ becomes spotify:track:<id>.
+// SoundCloud: Share → Copy Link, paste the full soundcloud.com/... URL as-is.
+type QueueTrack =
+  | { platform: "spotify"; uri: string; artist: string; title: string }
+  | { platform: "soundcloud"; url: string; artist: string; title: string };
+
+const TRACKS: QueueTrack[] = [
+  { platform: "spotify", uri: "spotify:track:404MxkOiMnqfYgiHtI7jEr", artist: "", title: "" },
+  { platform: "spotify", uri: "spotify:track:2gCcxsBjL0Tii4cVPOwswZ", artist: "", title: "" },
+  { platform: "spotify", uri: "spotify:track:0VjIjW4GlUZAMYd2vXMi3b", artist: "The Weeknd", title: "Blinding Lights" },
+  { platform: "spotify", uri: "spotify:track:7qiZfU4dY1lWllzX7mPBI3", artist: "Ed Sheeran", title: "Shape of You" },
+  { platform: "spotify", uri: "spotify:track:4uLU6hMCjMI75M1A2tKUQC", artist: "Rick Astley", title: "Never Gonna Give You Up" },
 ];
+
+const FIRST_SPOTIFY_URI = TRACKS.find((t) => t.platform === "spotify")?.uri;
+const FIRST_SOUNDCLOUD_URL = TRACKS.find((t) => t.platform === "soundcloud")?.url;
 
 const CONTACT_LAYOUT_ID = "contact-card";
 
 export function HeroContact({ ready }: { ready: boolean }) {
   const [trackIndex, setTrackIndex] = useState(0);
+  const [activePlatform, setActivePlatform] = useState<QueueTrack["platform"]>(TRACKS[0].platform);
   const [contactOpen, setContactOpen] = useState(false);
-  const { iframeRef, doc, isPaused, togglePlay, loadTrack } = useSpotifyEmbed(TRACKS[0].uri);
+
+  const {
+    iframeRef: spotifyIframeRef,
+    doc: spotifyDoc,
+    isPaused: spotifyIsPaused,
+    togglePlay: spotifyTogglePlay,
+    pause: spotifyPause,
+    loadTrack: spotifyLoadTrack,
+  } = useSpotifyEmbed(FIRST_SPOTIFY_URI ?? "spotify:track:0VjIjW4GlUZAMYd2vXMi3b");
+
+  const {
+    iframeRef: soundcloudIframeRef,
+    doc: soundcloudDoc,
+    isPaused: soundcloudIsPaused,
+    togglePlay: soundcloudTogglePlay,
+    pause: soundcloudPause,
+    loadTrack: soundcloudLoadTrack,
+  } = useSoundCloudEmbed(FIRST_SOUNDCLOUD_URL);
+
+  const isPaused = activePlatform === "spotify" ? spotifyIsPaused : soundcloudIsPaused;
+
+  function togglePlay() {
+    if (activePlatform === "spotify") spotifyTogglePlay();
+    else soundcloudTogglePlay();
+  }
 
   function goTo(delta: number) {
-    const next = (trackIndex + delta + TRACKS.length) % TRACKS.length;
-    setTrackIndex(next);
-    loadTrack(TRACKS[next].uri);
+    const nextIndex = (trackIndex + delta + TRACKS.length) % TRACKS.length;
+    const next = TRACKS[nextIndex];
+    setTrackIndex(nextIndex);
+
+    if (next.platform !== activePlatform) {
+      if (activePlatform === "spotify") spotifyPause();
+      else soundcloudPause();
+    }
+    setActivePlatform(next.platform);
+
+    if (next.platform === "spotify") spotifyLoadTrack(next.uri);
+    else soundcloudLoadTrack(next.url);
   }
 
   return (
@@ -91,17 +134,33 @@ export function HeroContact({ ready }: { ready: boolean }) {
           </button>
 
           {/*
-            The Spotify iFrame API runs inside its own nested iframe (see useSpotifyEmbed) instead of
-            directly in this page, so whatever it resizes stays physically confined to that iframe's own
-            box — a real browser viewport boundary, not a CSS rule it could ever override. The outer wrapper
-            with overflow + contain is a second, redundant layer of insurance.
+            Both the Spotify and SoundCloud embed APIs run inside their own nested iframes (see
+            useSpotifyEmbed / useSoundCloudEmbed) instead of directly in this page, so whatever either one
+            resizes stays physically confined to that iframe's own box — a real browser viewport boundary,
+            not a CSS rule it could ever override. The outer wrapper with overflow + contain is a second,
+            redundant layer of insurance. Only the active platform's controller ever plays audio.
           */}
           <div
             aria-hidden
             className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0"
             style={{ contain: "strict" }}
           >
-            <iframe ref={iframeRef} srcDoc={doc} title="playback" tabIndex={-1} style={{ border: 0, width: 1, height: 1 }} />
+            <iframe
+              ref={spotifyIframeRef}
+              srcDoc={spotifyDoc}
+              title="playback-spotify"
+              tabIndex={-1}
+              style={{ border: 0, width: 1, height: 1 }}
+            />
+            {soundcloudDoc && (
+              <iframe
+                ref={soundcloudIframeRef}
+                srcDoc={soundcloudDoc}
+                title="playback-soundcloud"
+                tabIndex={-1}
+                style={{ border: 0, width: 1, height: 1 }}
+              />
+            )}
           </div>
         </div>
 
