@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Magnetic } from "../ui/Magnetic";
 import { ContactModal } from "../ui/ContactModal";
+import { OnMark } from "../ui/OnMark";
 import logoWordmark from "../../assets/logo-wordmark.svg";
 
 const CONTACT_LAYOUT_ID = "contact-card";
@@ -26,13 +27,28 @@ export function HeroContact({ ready }: { ready: boolean }) {
               animate={{ opacity: [0.3, 0.65, 0.3], scale: [0.88, 1.1, 0.88] }}
               transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
             />
-            <motion.img
-              src={logoWordmark}
-              alt="Parel On"
+            <motion.div
               className="relative h-24 w-24 sm:h-32 sm:w-32"
               animate={{ scale: [1, 1.035, 1] }}
               transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-            />
+            >
+              {/*
+                The scale-breathe above is Framer Motion's own inline-style `transform`, so the glitch
+                jitter (a stylesheet animation on the same property) lives on this separate plain child
+                instead of fighting over it — same fix as the intro's glitch.
+              */}
+              <div className="logo-glitch-shift relative h-full w-full">
+                <img src={logoWordmark} alt="Parel On" className="h-full w-full" />
+                <OnMark
+                  className="logo-glitch-ghost-a pointer-events-none absolute inset-0 h-full w-full mix-blend-screen"
+                  color="#00e5ff"
+                />
+                <OnMark
+                  className="logo-glitch-ghost-b pointer-events-none absolute inset-0 h-full w-full mix-blend-screen"
+                  color="#ff2e9a"
+                />
+              </div>
+            </motion.div>
           </div>
           <span className="font-mono text-[11px] tracking-[0.4em] text-mist-dim uppercase">
             Artist management

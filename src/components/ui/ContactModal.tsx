@@ -17,7 +17,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 const CONTACT_ENDPOINT = import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined;
-const CONTACT_EMAIL = "bookings@parelon.com";
+const CONTACT_EMAIL = "info@parel-on.com";
 
 const containerVariants: Variants = {
   hidden: {},
@@ -152,7 +152,17 @@ export function ContactModal({
                     <div className="mt-10 flex items-center gap-3">
                       <div className="relative flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-brand to-brand-lime">
                         <span className="absolute inset-0 animate-pulse-soft rounded-full bg-brand/40 blur-md" />
-                        <OnMark className="relative h-5 w-5" color="var(--color-ink)" />
+                        <div className="logo-glitch-shift logo-glitch-sm relative h-5 w-5">
+                          <OnMark className="h-full w-full" color="var(--color-ink)" />
+                          <OnMark
+                            className="logo-glitch-ghost-a logo-glitch-sm pointer-events-none absolute inset-0 h-full w-full mix-blend-screen"
+                            color="#00e5ff"
+                          />
+                          <OnMark
+                            className="logo-glitch-ghost-b logo-glitch-sm pointer-events-none absolute inset-0 h-full w-full mix-blend-screen"
+                            color="#ff2e9a"
+                          />
+                        </div>
                       </div>
                       <a
                         href={`mailto:${CONTACT_EMAIL}`}
