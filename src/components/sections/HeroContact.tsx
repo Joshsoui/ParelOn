@@ -114,7 +114,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
             data-cursor
             data-cursor-text="Prev"
             aria-label="Previous track"
-            className="text-accent transition-transform hover:scale-110"
+            className="text-silver transition-transform hover:scale-110"
           >
             <PrevIcon className="h-6 w-6" />
           </button>
@@ -124,7 +124,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
             data-cursor
             data-cursor-text={isPaused ? "Play" : "Pause"}
             aria-label={isPaused ? "Play" : "Pause"}
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-accent text-ink transition-transform hover:scale-105"
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-silver text-ink transition-transform hover:scale-105"
           >
             {isPaused ? <PlayIcon className="ml-0.5 h-6 w-6" /> : <PauseIcon className="h-6 w-6" />}
           </button>
@@ -134,7 +134,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
             data-cursor
             data-cursor-text="Next"
             aria-label="Next track"
-            className="text-accent transition-transform hover:scale-110"
+            className="text-silver transition-transform hover:scale-110"
           >
             <NextIcon className="h-6 w-6" />
           </button>
@@ -196,7 +196,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
               onClick={() => setContactOpen(true)}
               data-cursor
               data-cursor-text="Go"
-              className="rounded-full bg-accent px-8 py-3.5 font-mono text-xs tracking-[0.2em] text-ink uppercase transition-transform hover:scale-[1.03]"
+              className="rounded-full bg-silver px-8 py-3.5 font-mono text-xs tracking-[0.2em] text-ink uppercase transition-transform hover:scale-[1.03]"
             >
               Get in touch
             </button>
