@@ -15,8 +15,8 @@ type QueueTrack =
   | { platform: "soundcloud"; url: string; artist: string; title: string };
 
 const TRACKS: QueueTrack[] = [
-  { platform: "soundcloud", url: "https://on.soundcloud.com/IoXEksVqHRwGU22812", artist: "", title: "" },
   { platform: "spotify", uri: "spotify:track:404MxkOiMnqfYgiHtI7jEr", artist: "", title: "" },
+  { platform: "soundcloud", url: "https://on.soundcloud.com/IoXEksVqHRwGU22812", artist: "", title: "" },
   { platform: "spotify", uri: "spotify:track:2gCcxsBjL0Tii4cVPOwswZ", artist: "", title: "" },
   { platform: "spotify", uri: "spotify:track:0VjIjW4GlUZAMYd2vXMi3b", artist: "The Weeknd", title: "Blinding Lights" },
   { platform: "spotify", uri: "spotify:track:7qiZfU4dY1lWllzX7mPBI3", artist: "Ed Sheeran", title: "Shape of You" },
