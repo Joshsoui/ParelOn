@@ -8,8 +8,8 @@ import logoWordmark from "../../assets/logo-wordmark.svg";
 
 const schema = z.object({
   name: z.string().min(2, "Enter your name."),
+  phone: z.string().min(6, "Enter a valid phone number."),
   email: z.string().email("Enter a valid email address."),
-  message: z.string().min(10, "A few more details would help."),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -21,13 +21,11 @@ export function HeroContact() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: wrapperRef, offset: ["start start", "end end"] });
 
-  const logoScale = useTransform(scrollYProgress, (v) => transform(v, [0, 0.55], [1, 0.42]));
-  const logoY = useTransform(scrollYProgress, (v) => transform(v, [0, 0.55], [0, -230]));
-  const introOpacity = useTransform(scrollYProgress, (v) => transform(v, [0, 0.2, 0.38], [1, 1, 0]));
-  const introY = useTransform(scrollYProgress, (v) => transform(v, [0.12, 0.38], [0, -36]));
-  const formOpacity = useTransform(scrollYProgress, (v) => transform(v, [0.4, 0.66], [0, 1]));
-  const formY = useTransform(scrollYProgress, (v) => transform(v, [0.4, 0.7], [36, 0]));
-  const formPointerEvents = useTransform(scrollYProgress, (v) => (v > 0.45 ? "auto" : "none"));
+  const logoScale = useTransform(scrollYProgress, (v) => transform(v, [0, 0.5], [1, 0.42]));
+  const logoY = useTransform(scrollYProgress, (v) => transform(v, [0, 0.5], [0, -220]));
+  const formOpacity = useTransform(scrollYProgress, (v) => transform(v, [0.25, 0.55], [0, 1]));
+  const formY = useTransform(scrollYProgress, (v) => transform(v, [0.25, 0.6], [40, 0]));
+  const formPointerEvents = useTransform(scrollYProgress, (v) => (v > 0.3 ? "auto" : "none"));
   const hintOpacity = useTransform(scrollYProgress, (v) => transform(v, [0, 0.05], [1, 0]));
 
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -45,7 +43,7 @@ export function HeroContact() {
       window.location.assign(
         `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
           `Booking enquiry — ${values.name}`,
-        )}&body=${encodeURIComponent(values.message)}`,
+        )}&body=${encodeURIComponent(`Phone: ${values.phone}`)}`,
       );
       setStatus("sent");
       reset();
@@ -67,33 +65,24 @@ export function HeroContact() {
   }
 
   return (
-    <section ref={wrapperRef} id="top" className="relative h-[240vh]">
+    <section ref={wrapperRef} id="top" className="relative h-[200vh]">
       <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center overflow-hidden px-6">
         <motion.div
           style={{ scale: logoScale, y: logoY }}
-          className="flex flex-col items-center gap-4"
+          className="flex flex-col items-center gap-5"
         >
           <img src={logoWordmark} alt="Parel On" className="h-24 w-24 sm:h-32 sm:w-32" />
-          <span className="font-mono text-[11px] tracking-[0.5em] text-mist-dim uppercase">
-            Parel On
-          </span>
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="font-display text-2xl font-medium tracking-tight text-paper sm:text-3xl">
+              Parel On
+            </span>
+            <span className="font-mono text-[11px] tracking-[0.4em] text-mist-dim uppercase">
+              Artist management
+            </span>
+          </div>
         </motion.div>
 
-        <div className="relative mt-10 min-h-[300px] w-full max-w-md sm:min-h-[360px]">
-          <motion.div
-            style={{ opacity: introOpacity, y: introY }}
-            className="absolute inset-x-0 top-0 text-center"
-          >
-            <h1 className="font-display text-4xl leading-[1.05] font-semibold tracking-tight text-paper sm:text-5xl">
-              Artist management
-              <br />
-              &amp; bookings
-            </h1>
-            <p className="mt-4 font-display text-2xl leading-tight text-gradient sm:text-3xl">
-              for the sound of tomorrow.
-            </p>
-          </motion.div>
-
+        <div className="relative mt-12 min-h-[260px] w-full max-w-md sm:min-h-[300px]">
           <motion.div
             style={{ opacity: formOpacity, y: formY, pointerEvents: formPointerEvents }}
             className="absolute inset-x-0 top-0"
@@ -116,6 +105,17 @@ export function HeroContact() {
 
                 <div className="flex flex-col gap-1.5">
                   <input
+                    aria-label="Phone"
+                    type="tel"
+                    {...register("phone")}
+                    className="border-b border-line bg-transparent py-2.5 text-paper outline-none transition-colors placeholder:text-mist-dim focus:border-brand"
+                    placeholder="Phone"
+                  />
+                  {errors.phone && <p className="text-xs text-brand-lime">{errors.phone.message}</p>}
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <input
                     aria-label="Email"
                     type="email"
                     {...register("email")}
@@ -123,19 +123,6 @@ export function HeroContact() {
                     placeholder="Email"
                   />
                   {errors.email && <p className="text-xs text-brand-lime">{errors.email.message}</p>}
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <textarea
-                    aria-label="Message"
-                    rows={3}
-                    {...register("message")}
-                    className="resize-none border-b border-line bg-transparent py-2.5 text-paper outline-none transition-colors placeholder:text-mist-dim focus:border-brand"
-                    placeholder="Dates, venue, budget..."
-                  />
-                  {errors.message && (
-                    <p className="text-xs text-brand-lime">{errors.message.message}</p>
-                  )}
                 </div>
 
                 <div className="mt-1 flex items-center gap-4">
@@ -186,10 +173,7 @@ export function HeroContact() {
           <span className="font-mono text-[10px] tracking-[0.35em] text-mist-dim uppercase">
             Scroll
           </span>
-          <motion.span
-            aria-hidden
-            className="h-2 w-2 animate-bounce-soft rounded-full bg-brand"
-          />
+          <motion.span aria-hidden className="h-2 w-2 animate-bounce-soft rounded-full bg-brand" />
         </motion.div>
       </div>
     </section>
