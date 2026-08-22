@@ -88,8 +88,19 @@ export function HeroContact({ ready }: { ready: boolean }) {
             <NextIcon className="h-6 w-6" />
           </button>
 
-          {/* Spotify embed stays mounted (required by the controller API) but is visually hidden — only the buttons above are shown. */}
-          <div ref={mountRef} aria-hidden className="absolute h-px w-px overflow-hidden opacity-0" />
+          {/*
+            Spotify's own script sets inline styles directly on the div we hand it (and can resize itself
+            when playback starts), which beats our own classes on that same node. So it's caged inside an
+            outer box we fully control and never expose to Spotify — overflow + contain clip it no matter
+            what size Spotify tries to force it to.
+          */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0"
+            style={{ contain: "strict" }}
+          >
+            <div ref={mountRef} />
+          </div>
         </div>
 
         <motion.div
