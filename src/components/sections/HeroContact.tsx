@@ -40,7 +40,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
         <div className="flex flex-col items-center gap-5">
           <img src={logoWordmark} alt="Parel On" className="h-24 w-24 sm:h-32 sm:w-32" />
           <div className="flex flex-col items-center gap-1.5">
-            <span className="font-display text-2xl font-medium tracking-tight text-paper sm:text-3xl">
+            <span className="font-display text-2xl font-semibold tracking-tight text-paper sm:text-3xl">
               Parel On
             </span>
             <span className="font-mono text-[11px] tracking-[0.4em] text-mist-dim uppercase">
@@ -49,8 +49,8 @@ export function HeroContact({ ready }: { ready: boolean }) {
           </div>
         </div>
 
-        <div className="mt-10 flex flex-col items-center gap-4">
-          <div className="flex items-center gap-6">
+        <div className="mt-10 flex flex-col items-center gap-5 rounded-[28px] border border-line bg-white/[0.03] px-9 py-8 shadow-[0_0_80px_-30px_var(--color-brand)] backdrop-blur-xl">
+          <div className="flex items-center gap-7">
             <button
               onClick={() => goTo(-1)}
               data-cursor
@@ -86,7 +86,7 @@ export function HeroContact({ ready }: { ready: boolean }) {
             {current.artist} — {current.title}
           </p>
 
-          <div ref={mountRef} className="h-[80px] w-[280px] overflow-hidden rounded-xl opacity-90" />
+          <div ref={mountRef} className="h-[80px] w-[260px] overflow-hidden rounded-xl opacity-90" />
         </div>
 
         <motion.div

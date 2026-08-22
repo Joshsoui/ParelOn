@@ -4,6 +4,7 @@ import { CustomCursor } from "./components/layout/CustomCursor";
 import { NoiseOverlay } from "./components/layout/NoiseOverlay";
 import { ScrollProgress } from "./components/layout/ScrollProgress";
 import { Preloader } from "./components/layout/Preloader";
+import { AmbientGlow } from "./components/ui/AmbientGlow";
 import { HeroContact } from "./components/sections/HeroContact";
 import { Footer } from "./components/sections/Footer";
 
@@ -22,6 +23,7 @@ function App() {
     <SmoothScroll>
       <Preloader show={loading} />
       <CustomCursor />
+      <AmbientGlow />
       <NoiseOverlay />
       <ScrollProgress />
       <main>
