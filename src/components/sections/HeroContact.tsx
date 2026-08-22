@@ -19,7 +19,7 @@ const CONTACT_LAYOUT_ID = "contact-card";
 export function HeroContact({ ready }: { ready: boolean }) {
   const [trackIndex, setTrackIndex] = useState(0);
   const [contactOpen, setContactOpen] = useState(false);
-  const { mountRef, isPaused, togglePlay, loadTrack } = useSpotifyEmbed(TRACKS[0].uri);
+  const { iframeRef, doc, isPaused, togglePlay, loadTrack } = useSpotifyEmbed(TRACKS[0].uri);
 
   function goTo(delta: number) {
     const next = (trackIndex + delta + TRACKS.length) % TRACKS.length;
@@ -89,17 +89,17 @@ export function HeroContact({ ready }: { ready: boolean }) {
           </button>
 
           {/*
-            Spotify's own script sets inline styles directly on the div we hand it (and can resize itself
-            when playback starts), which beats our own classes on that same node. So it's caged inside an
-            outer box we fully control and never expose to Spotify — overflow + contain clip it no matter
-            what size Spotify tries to force it to.
+            The Spotify iFrame API runs inside its own nested iframe (see useSpotifyEmbed) instead of
+            directly in this page, so whatever it resizes stays physically confined to that iframe's own
+            box — a real browser viewport boundary, not a CSS rule it could ever override. The outer wrapper
+            with overflow + contain is a second, redundant layer of insurance.
           */}
           <div
             aria-hidden
             className="pointer-events-none absolute h-px w-px overflow-hidden opacity-0"
             style={{ contain: "strict" }}
           >
-            <div ref={mountRef} />
+            <iframe ref={iframeRef} srcDoc={doc} title="playback" tabIndex={-1} style={{ border: 0, width: 1, height: 1 }} />
           </div>
         </div>
 

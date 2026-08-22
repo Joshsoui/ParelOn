@@ -1,105 +1,86 @@
 import { useEffect, useRef, useState } from "react";
 
-// Minimal shape of the Spotify iFrame API (https://developer.spotify.com/documentation/embeds/tutorials/using-the-iframe-api).
-// There is no official @types package, so this is typed loosely on purpose.
-type PlaybackUpdatePayload = {
-  data?: {
-    isPaused?: boolean;
-    isBuffering?: boolean;
-    duration?: number;
-    position?: number;
+// The Spotify iFrame API (https://developer.spotify.com/documentation/embeds/tutorials/using-the-iframe-api)
+// resizes whatever container element it's given once playback starts, and that resize can override any
+// classes/styles we put on that same node. Running it inside its own nested <iframe> instead of directly in
+// this page means whatever it resizes is still physically confined to that iframe's box — a real browser
+// viewport boundary, not a CSS rule it (or its own script) could ever override — so it can never paint
+// outside the tiny hidden box we give it.
+const BRIDGE_SOURCE = "parelon-spotify-bridge";
+
+function buildEmbedDoc(initialUri: string) {
+  return `<!doctype html>
+<html>
+<head><style>html,body{margin:0;padding:0;overflow:hidden;background:transparent;}</style></head>
+<body>
+<div id="embed"></div>
+<script src="https://open.spotify.com/embed/iframe-api/v1"></script>
+<script>
+(function () {
+  var controller = null;
+
+  window.onSpotifyIframeApiReady = function (IFrameAPI) {
+    IFrameAPI.createController(
+      document.getElementById("embed"),
+      { uri: ${JSON.stringify(initialUri)}, height: "80" },
+      function (c) {
+        controller = c;
+        c.addListener("ready", function () {
+          parent.postMessage({ source: "${BRIDGE_SOURCE}", type: "ready" }, "*");
+        });
+        c.addListener("playback_update", function (e) {
+          var isPaused = e && e.data ? e.data.isPaused : undefined;
+          parent.postMessage({ source: "${BRIDGE_SOURCE}", type: "playback_update", isPaused: isPaused }, "*");
+        });
+      }
+    );
   };
-};
 
-type EmbedController = {
-  play: () => void;
-  pause: () => void;
-  resume: () => void;
-  togglePlay: () => void;
-  loadUri: (uri: string) => void;
-  addListener: (event: "ready" | "playback_update", cb: (e: PlaybackUpdatePayload) => void) => void;
-  destroy: () => void;
-};
-
-type IFrameAPI = {
-  createController: (
-    element: HTMLElement,
-    options: { uri: string; width?: string | number; height?: string | number },
-    callback: (controller: EmbedController) => void,
-  ) => void;
-};
-
-declare global {
-  interface Window {
-    onSpotifyIframeApiReady?: (IFrameAPI: IFrameAPI) => void;
-    SpotifyIframeApi?: IFrameAPI;
-  }
-}
-
-const SCRIPT_SRC = "https://open.spotify.com/embed/iframe-api/v1";
-
-function loadSpotifyIframeApi(): Promise<IFrameAPI> {
-  return new Promise((resolve) => {
-    if (window.SpotifyIframeApi) {
-      resolve(window.SpotifyIframeApi);
-      return;
-    }
-
-    const prev = window.onSpotifyIframeApiReady;
-    window.onSpotifyIframeApiReady = (api) => {
-      window.SpotifyIframeApi = api;
-      prev?.(api);
-      resolve(api);
-    };
-
-    if (!document.querySelector(`script[src="${SCRIPT_SRC}"]`)) {
-      const script = document.createElement("script");
-      script.src = SCRIPT_SRC;
-      script.async = true;
-      document.body.appendChild(script);
+  window.addEventListener("message", function (e) {
+    var msg = e.data;
+    if (!msg || msg.source !== "${BRIDGE_SOURCE}-cmd" || !controller) return;
+    if (msg.type === "togglePlay") controller.togglePlay();
+    if (msg.type === "loadUri") {
+      controller.loadUri(msg.uri);
+      setTimeout(function () { controller.play(); }, 150);
     }
   });
+})();
+</script>
+</body>
+</html>`;
 }
 
 export function useSpotifyEmbed(initialUri: string) {
-  const mountRef = useRef<HTMLDivElement>(null);
-  const controllerRef = useRef<EmbedController | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [doc] = useState(() => buildEmbedDoc(initialUri));
   const [ready, setReady] = useState(false);
   const [isPaused, setIsPaused] = useState(true);
 
   useEffect(() => {
-    let cancelled = false;
+    function onMessage(e: MessageEvent) {
+      if (!iframeRef.current || e.source !== iframeRef.current.contentWindow) return;
+      const msg = e.data;
+      if (!msg || msg.source !== BRIDGE_SOURCE) return;
+      if (msg.type === "ready") setReady(true);
+      if (msg.type === "playback_update" && typeof msg.isPaused === "boolean") setIsPaused(msg.isPaused);
+    }
 
-    loadSpotifyIframeApi().then((api) => {
-      if (cancelled || !mountRef.current) return;
-
-      api.createController(mountRef.current, { uri: initialUri, height: "80" }, (controller) => {
-        if (cancelled) return;
-        controllerRef.current = controller;
-
-        controller.addListener("ready", () => setReady(true));
-        controller.addListener("playback_update", (e) => {
-          if (typeof e.data?.isPaused === "boolean") setIsPaused(e.data.isPaused);
-        });
-      });
-    });
-
-    return () => {
-      cancelled = true;
-      controllerRef.current?.destroy();
-      controllerRef.current = null;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
   }, []);
 
+  function post(message: Record<string, unknown>) {
+    iframeRef.current?.contentWindow?.postMessage({ source: `${BRIDGE_SOURCE}-cmd`, ...message }, "*");
+  }
+
   function togglePlay() {
-    controllerRef.current?.togglePlay();
+    post({ type: "togglePlay" });
   }
 
   function loadTrack(uri: string) {
-    controllerRef.current?.loadUri(uri);
-    setTimeout(() => controllerRef.current?.play(), 150);
+    post({ type: "loadUri", uri });
   }
 
-  return { mountRef, ready, isPaused, togglePlay, loadTrack };
+  return { iframeRef, doc, ready, isPaused, togglePlay, loadTrack };
 }
