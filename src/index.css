@@ -49,6 +49,53 @@
   }
 }
 
+/* Intro flicker — hard color-swap cuts on the fullscreen preloader, settling back to the resting
+   green/white pair before it exits. steps(1, end) holds each stop for its full segment (no blending)
+   and the segments are kept long enough to stay under ~3 flashes/sec. */
+@keyframes intro-flicker-bg {
+  0% {
+    background: linear-gradient(90deg, #a7d86b 0%, #c3de73 100%);
+  }
+  25% {
+    background: #050506;
+  }
+  50% {
+    background: #ffffff;
+  }
+  75% {
+    background: #a7d86b;
+  }
+  100% {
+    background: linear-gradient(90deg, #a7d86b 0%, #c3de73 100%);
+  }
+}
+
+@keyframes intro-flicker-fg {
+  0% {
+    color: #ffffff;
+  }
+  25% {
+    color: #a7d86b;
+  }
+  50% {
+    color: #050506;
+  }
+  75% {
+    color: #ffffff;
+  }
+  100% {
+    color: #ffffff;
+  }
+}
+
+.intro-flicker-bg {
+  animation: intro-flicker-bg 1.6s steps(1, end) both;
+}
+
+.intro-flicker-fg {
+  animation: intro-flicker-fg 1.6s steps(1, end) both;
+}
+
 * {
   scrollbar-color: var(--color-silver) var(--color-ink);
 }
