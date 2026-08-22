@@ -27,8 +27,6 @@ export function HeroContact({ ready }: { ready: boolean }) {
     loadTrack(TRACKS[next].uri);
   }
 
-  const current = TRACKS[trackIndex];
-
   return (
     <section id="top" className="relative flex min-h-[100svh] flex-col items-center justify-center px-6 py-24">
       <motion.div
@@ -44,44 +42,38 @@ export function HeroContact({ ready }: { ready: boolean }) {
           </span>
         </div>
 
-        <div className="mt-10 flex flex-col items-center gap-5 rounded-[28px] border border-line bg-white/[0.03] px-9 py-8 shadow-[0_0_80px_-30px_var(--color-silver)] backdrop-blur-xl">
-          <div className="flex items-center gap-7">
-            <button
-              onClick={() => goTo(-1)}
-              data-cursor
-              data-cursor-text="Prev"
-              aria-label="Previous track"
-              className="text-silver transition-transform hover:scale-110"
-            >
-              <PrevIcon className="h-6 w-6" />
-            </button>
+        <div className="mt-10 flex items-center gap-7">
+          <button
+            onClick={() => goTo(-1)}
+            data-cursor
+            data-cursor-text="Prev"
+            aria-label="Previous track"
+            className="text-silver transition-transform hover:scale-110"
+          >
+            <PrevIcon className="h-6 w-6" />
+          </button>
 
-            <button
-              onClick={togglePlay}
-              data-cursor
-              data-cursor-text={isPaused ? "Play" : "Pause"}
-              aria-label={isPaused ? "Play" : "Pause"}
-              className="flex h-14 w-14 items-center justify-center rounded-full bg-silver text-ink transition-transform hover:scale-105"
-            >
-              {isPaused ? <PlayIcon className="ml-0.5 h-6 w-6" /> : <PauseIcon className="h-6 w-6" />}
-            </button>
+          <button
+            onClick={togglePlay}
+            data-cursor
+            data-cursor-text={isPaused ? "Play" : "Pause"}
+            aria-label={isPaused ? "Play" : "Pause"}
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-silver text-ink transition-transform hover:scale-105"
+          >
+            {isPaused ? <PlayIcon className="ml-0.5 h-6 w-6" /> : <PauseIcon className="h-6 w-6" />}
+          </button>
 
-            <button
-              onClick={() => goTo(1)}
-              data-cursor
-              data-cursor-text="Next"
-              aria-label="Next track"
-              className="text-silver transition-transform hover:scale-110"
-            >
-              <NextIcon className="h-6 w-6" />
-            </button>
-          </div>
+          <button
+            onClick={() => goTo(1)}
+            data-cursor
+            data-cursor-text="Next"
+            aria-label="Next track"
+            className="text-silver transition-transform hover:scale-110"
+          >
+            <NextIcon className="h-6 w-6" />
+          </button>
 
-          <p className="font-mono text-xs tracking-[0.15em] text-mist-dim uppercase">
-            {current.artist} — {current.title}
-          </p>
-
-          {/* Spotify embed stays mounted (required by the controller API) but is visually hidden — only the custom controls above are shown. */}
+          {/* Spotify embed stays mounted (required by the controller API) but is visually hidden — only the buttons above are shown. */}
           <div ref={mountRef} aria-hidden className="absolute h-px w-px overflow-hidden opacity-0" />
         </div>
 
